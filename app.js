@@ -1,16 +1,28 @@
 const express = require("express");
 const app = express();
+
+
 const morgan = require('morgan')
 const postBank = require('./postBank')
 const publicDir = express.static('public')
+
+
+
+
 let posts = postBank.list()
 app.use(publicDir)
+
+
+
 app.use(morgan('dev'))
 
 app.get('/', (req, res, next) => {
   let mappedBank = postBank.list().map(cur => {
     return [cur.title, cur.name]
   })
+  
+  
+  
   const otherHTML = `<!DOCTYPE html>
   <html>
   <head>
@@ -34,7 +46,12 @@ app.get('/', (req, res, next) => {
     </div>
   </body>
 </html>`
-    const html = `<!DOCTYPE html>
+    
+
+
+
+
+const html = `<!DOCTYPE html>
   <html lang="en">
   <head>
   	<meta charset="UTF-8">
@@ -52,10 +69,14 @@ app.get('/', (req, res, next) => {
   next()
 })
 
+
 app.get('/posts/:id', (req, res) => {
   const id = req.params.id
-  // const post = posts.list().find(cur=>cur.id === +id)
+ 
+  
   const post = postBank.find(id)
+  
+  
   const otherHTML = `<!DOCTYPE html>
   <html>
   <head>
@@ -76,9 +97,10 @@ app.get('/posts/:id', (req, res) => {
 app.get('/stuff', (req, res) => {
   res.send('<img src="logo.png" alt="">')
 })
-// app.get("/", (req, res) => res.send("Hello World!"));
 
-const PORT = 1337;
+const { PORT = 1337 } = process.env;
+
+
 
 app.listen(PORT, () => {
   console.log(`App listening in port ${PORT}`);
